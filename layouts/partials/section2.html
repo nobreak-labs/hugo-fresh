@@ -2,6 +2,7 @@
 {{- $title    := index $section2 "title" }}
 {{- $subtitle := index $section2 "subtitle" }}
 {{- $features := index $section2 "features" }}
+
 <section class="section is-medium" id="section2">
   <div class="container">
     <div class="columns">
@@ -21,9 +22,10 @@
           <div class="media-content mt-50">
             <div class="content">
               <p>
-                <span class="icon-box-title">{{ .title }}</span>
-
+								<!-- url 추가 -->
+								<a href="{{ .url }}" class="icon-box-title">{{ .title }}</a>
                 <span class="icon-box-text">{{ .text | markdownify }}</span>
+								
               </p>
             </div>
           </div>
