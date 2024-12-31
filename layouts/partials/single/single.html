@@ -1,3 +1,15 @@
 {{ partial "navbar.html" . }}
 {{ partial "navbar-clone.html" . }}
+
+<section class="section">
+	<div class="hero-body" style="padding: 0;">
+		<div style="position: relative; width: 100%; height: 200px; background-color: #f5f5f5; overflow: hidden;">
+			<img src="{{ .Params.banner_image }}" alt="{{ .Title }} 배너" style="width: 100%; height: 100%; object-fit: cover;">
+			<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+				<h1 class="title is-2" style="color: #333;">{{ .Title }}</h1>
+			</div>
+		</div>
+	</div>
+</section>
+
 {{ partial "single/content.html" . }}
