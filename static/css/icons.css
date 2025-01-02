@@ -3566,7 +3566,6 @@
 }
 
 /* footer */
-
 .footer {
 	padding: 0.5rem !important;
 	background: linear-gradient(180deg, #2C3E50, #1A252F) !important;
@@ -3585,60 +3584,45 @@
 	padding-top: 0.3rem !important;
 }
 
+/* 로고 */
+.footer-logo {
+	display: flex !important;
+	flex-direction: column !important;
+	align-items: center !important;
+	justify-content: center !important;
+}
+
 .footer-logo img {
-	max-height: 60px !important;
-	height: 60px !important;
+	max-height: 30px !important;
 	width: auto !important;
 	opacity: 0.9;
 	transition: opacity 0.3s ease;
 	object-fit: contain !important;
-	/* 이미지 비율 유지 */
-}
-
-.footer-logo {
-	display: flex !important;
-	justify-content: center !important;
-	align-items: center !important;
-	height: auto !important;
-	min-height: unset !important;
-	max-height: none !important;
 }
 
 .footer-logo img:hover {
 	opacity: 1;
 }
 
-/* 링크 스타일 개선 */
-.footer .link-list a {
-	color: #B3B9BD;
-	transition: color 0.3s ease;
-	font-size: 1rem;
-	letter-spacing: 0.3px;
-	line-height: 1.4;
+/* 소셜 미디어 아이콘 */
+.footer .level {
+	margin-bottom: 0.3rem !important;
+	justify-content: flex-end !important;
 }
 
-.footer .link-list a:hover {
-	color: #ffffff;
-	transform: translateX(5px);
+.footer .level-left {
+	justify-content: flex-end !important;
 }
 
-/* 아이콘 */
 .footer .level-item {
-	margin: 0 0.5rem;
+	margin: 0 0.4rem;
 	opacity: 0.8;
 	transition: all 0.3s ease;
-	font-size: 1.5rem !important;
 }
 
 .footer .level-item .icon i {
-	font-size: 1.5rem !important;
-	width: 1.5rem !important;
-	height: 1.5rem !important;
-}
-
-.footer .level-item .icon {
-	width: 1.5rem !important;
-	height: 1.5rem !important;
+	font-size: 1.2rem !important;
+	color: #B3B9BD;
 }
 
 .footer .level-item:hover {
@@ -3646,29 +3630,38 @@
 	transform: translateY(-2px);
 }
 
-/* 구분선 추가 */
-.footer-column {
-	border-left: 1px solid rgba(255, 255, 255, 0.1);
-	padding-left: 1rem;
-	margin-bottom: 0;
-	margin-top: 0;
+/* 연락처 정보 */
+.contact-info {
+	color: #B3B9BD;
+	font-size: 0.85rem;
+	text-align: center;
+	line-height: 1.6;
 }
 
-.footer-header h3 {
-	font-size: 0.9rem;
-	margin-bottom: 0.3rem;
-	margin-top: 0;
+.contact-info .address {
+	margin-bottom: 0.2rem;
 }
 
-.link-list {
-	margin: 0;
-	padding: 0;
+.contact-info .contact {
+	color: #B3B9BD;
 }
 
-/* 모바일 */
+/* 저작권 */
+.copyright {
+	color: #B3B9BD;
+	font-size: 0.85rem;
+	white-space: nowrap;
+	text-align: right;
+}
+
+/* 모바일 대응 */
 @media screen and (max-width: 768px) {
-	.footer-column {
-		border-left: none;
-		padding-left: 0;
+	.footer .level,
+	.footer .level-left {
+			justify-content: center !important;
+	}
+	
+	.copyright {
+			text-align: center;
 	}
 }
