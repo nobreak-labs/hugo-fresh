@@ -2,69 +2,82 @@
 {{ partial "navbar-clone.html" . }}
 
 <section class="section banner-section">
-    <div class="hero-body" style="padding: 0;">
-        <div class="banner-container">
-            {{ $image := .Params.banner_image }}
-            {{ if or (hasPrefix $image "http://") (hasPrefix $image "https://") }}
-                <div class="image-wrapper">
-                    <img src="{{ $image }}" alt="{{ $.Title }} 배너" class="banner-image">
-                </div>
-            {{ else }}
-                {{ if fileExists (printf "static%s" $image) }}
-                    <div class="image-wrapper">
-                        <img src="{{ $image }}" alt="{{ $.Title }} 배너" class="banner-image">
-                    </div>
-                {{ else }}
-                    <div class="empty-banner"></div>
-                {{ end }}
-            {{ end }}
-            <div class="banner-title">
-                <h1 class="title is-2" style="color: #333;">{{ .Title }}</h1>
-            </div>
-        </div>
-    </div>
+	<div class="hero-body" style="padding: 0;">
+			<div class="banner-container">
+					{{ $image := .Params.banner_image }}
+					{{ if $image }}
+							{{ $imagePath := printf "static/images/banner/%s" $image }}
+							{{ if fileExists $imagePath }}
+									<div class="image-wrapper">
+											<img src="{{ printf "/images/banner/%s" $image }}" alt="{{ $.Title }} 배너" class="banner-image">
+											<div class="banner-title">
+													<h1 class="title is-2" style="color: white;">{{ .Title }}</h1>
+											</div>
+									</div>
+							{{ else }}
+									<div class="empty-banner">
+											<div class="banner-title">
+													<h1 class="title is-2" style="color: #333;">{{ .Title }}</h1>
+											</div>
+									</div>
+							{{ end }}
+					{{ else }}
+							<div class="empty-banner">
+									<div class="banner-title">
+											<h1 class="title is-2" style="color: #333;">{{ .Title }}</h1>
+									</div>
+							</div>
+					{{ end }}
+			</div>
+	</div>
 </section>
 
 <style>
 .banner-container {
-    position: relative;
-    background-color: white;
-    overflow: hidden;
+	position: relative;
+	height: 300px;
 }
 
 .image-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+	width: 100%;
+	height: 100%;
+	background-color: #1a2b3c;
 }
 
 .banner-image {
-    max-width: 100%;
-    height: auto;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
 }
 
 .empty-banner {
-    width: 100%;
-    height: 0;
-    padding-bottom: 10%;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .banner-title {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    width: 100%;
-    padding: 0 1rem;
+	text-align: center;
+	width: 100%;
+	padding: 0 1rem;
+	z-index: 2;
+}
+
+.image-wrapper .banner-title {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 @media screen and (max-width: 768px) {
-    .empty-banner {
-        padding-bottom: 50%;
-    }
+	.banner-container {
+			height: 200px;
+	}
 }
 </style>
 
