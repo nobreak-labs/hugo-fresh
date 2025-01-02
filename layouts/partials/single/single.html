@@ -6,21 +6,12 @@
 			<div class="banner-container">
 					{{ $image := .Params.banner_image }}
 					{{ if $image }}
-							{{ $imagePath := printf "static/images/banner/%s" $image }}
-							{{ if fileExists $imagePath }}
-									<div class="image-wrapper">
-											<img src="{{ printf "/images/banner/%s" $image }}" alt="{{ $.Title }} 배너" class="banner-image">
-											<div class="banner-title">
-													<h1 class="title is-2" style="color: white;">{{ .Title }}</h1>
-											</div>
+							<div class="image-wrapper">
+									<img src="{{ printf "/images/banners/%s" $image }}" alt="{{ $.Title }} 배너" class="banner-image">
+									<div class="banner-title">
+											<h1 class="title is-2" style="color: white;">{{ .Title }}</h1>
 									</div>
-							{{ else }}
-									<div class="empty-banner">
-											<div class="banner-title">
-													<h1 class="title is-2" style="color: #333;">{{ .Title }}</h1>
-											</div>
-									</div>
-							{{ end }}
+							</div>
 					{{ else }}
 							<div class="empty-banner">
 									<div class="banner-title">
