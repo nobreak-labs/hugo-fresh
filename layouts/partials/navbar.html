@@ -8,7 +8,9 @@
     <div class="navbar-brand">
       {{- if $navbarLogo}}
       <a class="navbar-item" href="{{ $navbarLogo.link }}">
-        <img src="{{ printf "images/%s" $navbarLogo.image | relURL }}" alt="" width="{{ $navbarLogoWidth }}" height="{{ $navbarLogoHeight }}">
+        <img src="{{ printf "images/%s" $navbarLogo.image | relURL }}" 
+             alt="" 
+             style="max-height: 40px; width: auto; object-fit: contain;">
       </a>
       {{- end}}
 
