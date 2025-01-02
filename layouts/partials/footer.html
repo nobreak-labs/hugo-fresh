@@ -6,44 +6,37 @@
 {{- $socialMediaTitle    := index $footer "socialmediatitle" }}
 
 <footer class="footer footer-dark">
-	<div class="container">
-			<div class="columns is-vcentered">
-					<div class="column is-narrow">
-							<div class="footer-logo">
-									<img src="{{ printf "images/logos/%s" $logo | relURL }}">
-							</div>
-					</div>
-					<div class="column has-text-centered">
+    <div class="container">
+        <div class="columns is-vcentered">
+            <div class="column is-narrow">
+                <div class="footer-logo">
+                    <img src="{{ printf "images/logos/%s" $logo | relURL }}">
+                </div>
+            </div>
+            <div class="column has-text-centered">
 							<div class="contact-info">
-									{{- with $quickLinks.column1 }}
-											{{- range .links }}
-													{{- if eq .text "서울시 성동구 아차산로 153 예림출판문화센터 3층" }}
-															<p class="address">{{ .text }}</p>
-													{{- else }}
-															{{- if eq .text "02-463-2338" }}
-																	<p class="contact">{{ .text }} / 
-															{{- else }}
-																	{{- .text }}</p>
-															{{- end }}
-													{{- end }}
-											{{- end }}
-									{{- end }}
-							</div>
-					</div>
-					<div class="column is-narrow">
-							<nav class="level is-mobile">
-									<div class="level-left">
-											{{- range $socialMedia }}
-											<a class="level-item" href="{{ .link }}" target="_blank">
-													<span class="icon"><i class="fa fa-{{ .icon }}"></i></span>
-											</a>
-											{{- end }}
-									</div>
-							</nav>
-							<p class="copyright">© {{ now.Format "2006" }} Nobreak Co., Ltd. All Rights Reserved.</p>
-					</div>
-			</div>
-	</div>
+								{{- with $quickLinks.column1 }}
+										{{- with .links }}
+												<p class="address">{{ (index . 0).text }}</p>
+												<p class="contact">{{ (index . 1).text }} | {{ (index . 2).text }}</p>
+										{{- end }}
+								{{- end }}
+						</div>
+            </div>
+            <div class="column is-narrow">
+                <nav class="level is-mobile">
+                    <div class="level-left">
+                        {{- range $socialMedia }}
+                        <a class="level-item" href="{{ .link }}" target="_blank">
+                            <span class="icon"><i class="fa fa-{{ .icon }}"></i></span>
+                        </a>
+                        {{- end }}
+                    </div>
+                </nav>
+                <p class="copyright">© {{ now.Format "2006" }} Nobreak Co., Ltd. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
 </footer>
 <!-- 
   Previous Version - Full Footer(v24.12.31)
