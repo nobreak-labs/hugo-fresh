@@ -2,74 +2,245 @@
 {{ partial "navbar-clone.html" . }}
 
 <section class="section banner-section">
-	<div class="hero-body" style="padding: 0;">
-			<div class="banner-container">
-					{{ $image := .Params.banner_image }}
-					{{ if $image }}
-							<div class="image-wrapper">
-									<img src="{{ printf "/images/banners/%s" $image }}" alt="{{ $.Title }} 배너" class="banner-image">
-									<div class="banner-title">
-											<h1 class="title is-2" style="color: white;">{{ .Title }}</h1>
-									</div>
-							</div>
-					{{ else }}
-							<div class="empty-banner">
-									<div class="banner-title">
-											<h1 class="title is-2" style="color: #333;">{{ .Title }}</h1>
-									</div>
-							</div>
-					{{ end }}
-			</div>
-	</div>
+    <div class="hero-body" style='padding: 0;'>
+        <div class="banner-container">
+            {{ $image := .Params.banner_image }}
+            {{ if $image }}
+                <div class="image-wrapper">
+                    <img src="{{ printf "/images/banners/%s" $image }}" alt="{{ $.Title }} 배너" class="banner-image">
+                    <div class="banner-title">
+                        <h1 class="title is-2" style="color: white;">{{ .Title }}</h1>
+                    </div>
+                </div>
+            {{ else }}
+                <div class="empty-banner">
+                    <div class="banner-title">
+                        <h1 class="title is-2" style="color: #333;">{{ .Title }}</h1>
+                    </div>
+                </div>
+            {{ end }}
+        </div>
+    </div>
 </section>
 
 <style>
 .banner-container {
-	position: relative;
-	height: 300px;
+    position: relative;
+    height: 300px;
 }
 
 .image-wrapper {
-	width: 100%;
-	height: 100%;
-	background-color: #1a2b3c;
+    width: 100%;
+    height: 100%;
+    background-color: #1a2b3c;
 }
 
 .banner-image {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	object-position: center;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .empty-banner {
-	width: 100%;
-	height: 100%;
-	background-color: white;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .banner-title {
-	text-align: center;
-	width: 100%;
-	padding: 0 1rem;
-	z-index: 2;
+    text-align: center;
+    width: 100%;
+    padding: 0 1rem;
+    z-index: 2;
 }
 
 .image-wrapper .banner-title {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
+/* 콘텐츠 영역 스타일 */
+.section.is-medium {
+    padding: 2rem 1.5rem;
+}
+
+.section .container {
+    max-width: 1344px;
+    margin: 0 auto;
+}
+
+.section .content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+/* 연혁 페이지용 아코디언 스타일 */
+.history-year {
+    margin-bottom: 1rem;
+    border: 1px solid #eee;
+    border-radius: 4px;
+}
+
+.history-year-title {
+    background-color: #dceefb; /* 연한 회색 배경 */
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd; /* 테두리 추가 */
+    border-radius: 4px; /* 모서리를 둥글게 */
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
+}
+
+.history-year-title:hover {
+    background-color: #b0d5f9; /* 호버 시 더 진한 배경색 */
+    transform: scale(1.02); /* 약간 확대 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* 호버 시 그림자 강화 */
+}
+
+.history-year-title:after {
+    content: '▼'; /* 기본 상태 아이콘 */
+    font-size: 1rem;
+    color: #00509e;
+    transition: transform 0.2s ease;
+}
+
+.history-year.is-active .history-year-title:after {
+    transform: rotate(180deg); /* 열렸을 때 화살표 방향 변경 */
+    color: #000;
+}
+
+/* 닫힌 상태의 기본 배경 강조 */
+.history-year {
+    margin-bottom: 1rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.history-year-content {
+    overflow: hidden; /* 내용이 넘치면 숨김 */
+    opacity: 0.5; /* 흐릿한 효과 */
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.history-year.is-active .history-year-content {
+    max-height: none; 
+    opacity: 1; 
+}
+
+
 @media screen and (max-width: 768px) {
-	.banner-container {
-			height: 200px;
-	}
+    .banner-container {
+        height: 200px;
+    }
+    
+    .section.is-medium {
+        padding: 2rem 1rem;
+    }
 }
 </style>
 
-{{ partial "single/content.html" . }}
+<!-- if Title = "연혁 및 사업실적 "" -->
+
+<section class="section is-medium" style="padding-top: 0;">
+	<div class="container">
+			<div class="columns">
+					<!-- 왼쪽 마진 설정 -->
+					<div class="column is-10 is-offset-1" style="margin-left: 5%;">
+							<div class="content">
+									{{ if eq .Title "연혁 및 사업실적" }}
+											<!-- 소개 텍스트 -->
+											<p>{{ index (split .RawContent "\n\n") 0 }}</p>
+
+											<!-- 연도별 내용 -->
+											{{ $sections := split .RawContent "## " }}
+											{{ range after 1 $sections }}
+													{{ $yearContent := split . "\n" }}
+													{{ $year := index $yearContent 0 }}
+													<div class="history-year">
+															<div class="history-year-title">
+																	<h2 class="title is-4 mb-0">{{ $year }}</h2>
+															</div>
+															<div class="history-year-content">
+																	{{ delimit (after 1 $yearContent) "\n" | markdownify }}
+															</div>
+													</div>
+											{{ end }}
+									{{ else }}
+											{{ .Content }}
+									{{ end }}
+							</div>
+					</div>
+			</div>
+	</div>
+</section>
+
+<script>
+// Hugo 변수를 JavaScript 변수로 먼저 선언
+const pageTitle = "{{ .Title }}";
+
+// JavaScript에서 문자열 비교
+if (pageTitle === "연혁 및 사업실적") {
+    document.addEventListener('DOMContentLoaded', function () {
+        const yearTitles = document.querySelectorAll('.history-year-title');
+        const yearBlocks = document.querySelectorAll('.history-year');
+
+        // 기본적으로 모든 섹션을 닫기
+        yearBlocks.forEach(function (block) {
+            block.classList.remove('is-active');
+            const content = block.querySelector('.history-year-content');
+            content.style.maxHeight = '0';
+            content.style.opacity = '0';
+        });
+
+        // 가장 최신 섹션만 열기
+        const latestBlock = yearBlocks[0]; // 최신 섹션이 HTML 상에서 첫 번째라 가정
+        if (latestBlock) {
+            latestBlock.classList.add('is-active');
+            const content = latestBlock.querySelector('.history-year-content');
+            content.style.maxHeight = content.scrollHeight + 'px';
+            content.style.opacity = '1';
+        }
+
+        // 토글 이벤트 추가
+				yearTitles.forEach(function (title) {
+    title.addEventListener('click', function () {
+        const yearBlock = title.parentElement;
+        const content = yearBlock.querySelector('.history-year-content');
+
+        if (yearBlock.classList.contains('is-active')) {
+            yearBlock.classList.remove('is-active');
+            content.style.maxHeight = '0';
+            content.style.opacity = '0';
+        } else {
+            // 다른 섹션 닫기
+            yearBlocks.forEach(function (block) {
+                block.classList.remove('is-active');
+                const otherContent = block.querySelector('.history-year-content');
+                otherContent.style.maxHeight = '0';
+                otherContent.style.opacity = '0';
+            });
+
+            // 현재 섹션 열기
+            yearBlock.classList.add('is-active');
+            content.style.maxHeight = content.scrollHeight + 'px';
+            content.style.opacity = '1';
+        }
+    });
+});
+
+    });
+}
+
+</script>
