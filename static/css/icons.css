@@ -3574,6 +3574,12 @@
 }
 
 /* footer */
+
+.container {
+	max-width: 100%;
+	padding-top: 1.5rem; /* 기존보다 상단 공간 추가 */
+	padding-bottom: 1rem; /* 하단 공간도 확장 */
+}
 .footer {
 	padding: 0.5rem !important;
 	background: linear-gradient(180deg, #2C3E50, #1A252F) !important;
@@ -3672,6 +3678,9 @@
 	.copyright {
 			text-align: center;
 	}
+	.content-container {
+    padding: 0 1.5rem; 
+  }
 }
 
 /*  */
