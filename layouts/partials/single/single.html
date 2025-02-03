@@ -34,9 +34,21 @@
 }
 
 .image-wrapper {
+    position: relative;
     width: 100%;
     height: 100%;
     background-color: #1a2b3c;
+}
+
+.image-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3); /* 배경에 색상 오버레이 */
+    z-index: 1; /* 텍스트 위에 오버레이가 오도록 설정 */
 }
 
 .banner-image {
@@ -56,10 +68,19 @@
 }
 
 .banner-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
     width: 100%;
-    padding: 0 1rem;
+    padding: 1rem;
     z-index: 2;
+    background: rgba(0, 0, 0, 0.3); /* 배경을 좀 더 진하게 해서 글자가 잘 보이도록 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.8); /* 텍스트 그림자 강화 */
+    font-weight: 600; /* 폰트 두께를 좀 더 두껍게 */
+    letter-spacing: 0.8px; /* 자간을 조금 더 넓게 */
 }
 
 .image-wrapper .banner-title {
