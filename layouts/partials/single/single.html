@@ -171,6 +171,35 @@
         height: 300px;  /* 모바일에서는 더 작게 */
     }
 }
+
+/* 표 스타일 */
+
+table {
+    width: 100%;
+    table-layout: auto; /* 다시 auto로 변경 */
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+/* 마지막 열을 제외한 모든 열 */
+td:not(:last-child), 
+th:not(:last-child) {
+    width: 1%; /* 중요: 내용물 크기만큼만 공간 차지하게 함 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+/* 마지막 열 */
+td:last-child,
+th:last-child {
+    width: 100%; /* 남은 공간 모두 사용 */
+    white-space: normal; /* 텍스트 자동 줄바꿈 */
+}
+
 </style>
 
 <!-- if Title = "연혁 및 사업실적 "" -->
