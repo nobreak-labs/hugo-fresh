@@ -1,0 +1,254 @@
+{{ partial "navbar.html" . }}
+{{ partial "navbar-clone.html" . }}
+
+<!-- 배너 섹션 -->
+<section class="section banner-section">
+    <div class="hero-body" style='padding: 0;'>
+        <div class="banner-container">
+            {{ $image := .Params.banner_image }}
+            {{ if $image }}
+                <div class="image-wrapper">
+                    <img src="{{ printf "/images/banners/%s" $image }}" alt="{{ $.Title }} 배너" class="banner-image">
+                    <div class="banner-title">
+                        <h1 class="title is-2" style="color: white;">{{ .Title }}</h1>
+                    </div>
+                </div>
+            {{ else }}
+                <div class="empty-banner">
+                    <div class="banner-title">
+                        <h1 class="title is-2" style="color: #333;">{{ .Title }}</h1>
+                    </div>
+                </div>
+            {{ end }}
+        </div>
+    </div>
+</section>
+
+<!-- 컨설팅 서비스 섹션 -->
+<section class="section section-feature-grey is-medium" id="section1">
+    <div class="container">
+        <div class="title-wrapper has-text-centered">
+            <h2 class="title is-2">{{ .Params.consulting.page_title }}</h2>
+            <h3 class="subtitle is-5 is-muted">{{ .Params.consulting.page_subtitle }}</h3>
+            <div class="divider is-centered"></div>
+        </div>
+        <div class="content-wrapper">
+            <div class="columns">
+                {{ range .Params.consulting.tiles }}
+                <div class="column is-one-third">
+                    <div class="feature-card is-bordered has-text-centered revealOnScroll delay-1" data-animation="fadeInLeft">
+                        <div class="card-image-wrapper">
+                            <img src="{{ printf "images/illustrations/icons/%s.png" .icon | relURL }}" class="card-image">
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">
+                                <h4>{{ .title }}</h4>
+                            </div>
+                            <div class="card-text">
+                                <p>{{ .text }}</p>
+                            </div>
+                            <div class="card-action">
+                                <div class="date-range typing-animation">
+                                    <span class="start-date">{{ .startDate }}</span>
+                                    <span class="date-separator">~</span>
+                                    {{ if .endDate }}
+                                        <span class="end-date">{{ .endDate }}</span>
+                                    {{ else }}
+                                        <span class="ongoing pulse-animation">진행중</span>
+                                    {{ end }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{ end }}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* 배너 스타일 */
+.banner-container {
+    position: relative;
+    height: 500px;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+}
+
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #1a2b3c;
+}
+
+.image-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    z-index: 1;
+}
+
+.banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.empty-banner {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+    padding: 1rem;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.8);
+    font-weight: 600;
+    letter-spacing: 0.8px;
+}
+
+/* 컨설팅 섹션 스타일 */
+.feature-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    padding: 0 !important;
+    border: 1px solid #e5e5e5;
+}
+
+.card-image-wrapper {
+    position: relative;
+    padding-top: 100%;
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    background-color: #f5f5f5;
+}
+
+.card-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    margin: 0;
+    padding: 0;
+}
+
+.card-content {
+    padding: 1.5rem;
+    background: white;
+    margin-top: auto;
+}
+
+.card-title {
+    margin-bottom: 1rem;
+}
+
+.card-text {
+    margin-bottom: 1rem;
+}
+
+.card-action {
+    margin-top: 1rem;
+}
+
+.date-range {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    padding: 0.5rem 1rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: inline-block;
+}
+
+.date-separator {
+    margin: 0 0.5rem;
+    color: #6c757d;
+}
+
+.ongoing {
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.divider {
+    margin: 2rem auto;
+    width: 50px;
+    height: 3px;
+    background-color: #ff7900;
+}
+
+/* 애니메이션 */
+.typing-animation {
+    border-right: 2px solid transparent;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+.pulse-animation {
+    animation: pulse 2s infinite;
+    display: inline-block;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #2c3e50 }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* 반응형 스타일 */
+@media screen and (max-width: 768px) {
+    .banner-container {
+        height: 300px;
+    }
+
+    .column.is-one-third {
+        width: 100%;
+    }
+}
+</style>

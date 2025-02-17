@@ -1,13 +1,17 @@
 {{ define "main" }}
 
-{{ partial "single/single.html" . }}
+{{ if eq .Layout "test" }}
+    {{ partial "single/test.html" . }}
+{{ else }}
+    {{ partial "single/single.html" . }}
+{{ end }}
 
 {{ if .Params.include_footer }}
-{{ partial "footer.html" . }}
+    {{ partial "footer.html" . }}
 {{ end }}
 
 {{ if .Params.sidebar }}
-{{ partial "single/sidebar.html" . }}
+    {{ partial "single/sidebar.html" . }}
 {{ end }}
 
 {{ end }}
