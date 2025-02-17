@@ -1,70 +1,48 @@
 {{ partial "navbar.html" . }}
 {{ partial "navbar-clone.html" . }}
 
-<!-- 배너 섹션 -->
-<section class="section banner-section">
-    <div class="hero-body" style='padding: 0;'>
-        <div class="banner-container">
-            {{ $image := .Params.banner_image }}
-            {{ if $image }}
-                <div class="image-wrapper">
-                    <img src="{{ printf "/images/banners/%s" $image }}" alt="{{ $.Title }} 배너" class="banner-image">
-                    <div class="banner-title">
-                        <h1 class="title is-2" style="color: white;">{{ .Title }}</h1>
-                    </div>
-                </div>
-            {{ else }}
-                <div class="empty-banner">
-                    <div class="banner-title">
-                        <h1 class="title is-2" style="color: #333;">{{ .Title }}</h1>
-                    </div>
-                </div>
-            {{ end }}
-        </div>
-    </div>
-</section>
-
-<!-- 컨설팅 서비스 섹션 -->
 <section class="section section-feature-grey is-medium" id="section1">
-    <div class="container">
-        <div class="title-wrapper has-text-centered">
-            <h2 class="title is-2">{{ .Params.consulting.page_title }}</h2>
-            <h3 class="subtitle is-5 is-muted">{{ .Params.consulting.page_subtitle }}</h3>
-            <div class="divider is-centered"></div>
-        </div>
-        <div class="content-wrapper">
-            <div class="columns">
-                {{ range .Params.consulting.tiles }}
-                <div class="column is-one-third">
-                    <div class="feature-card is-bordered has-text-centered revealOnScroll delay-1" data-animation="fadeInLeft">
-                        <div class="card-image-wrapper">
-                            <img src="{{ printf "images/illustrations/icons/%s.png" .icon | relURL }}" class="card-image">
-                        </div>
-                        <div class="card-content">
-                            <div class="card-title">
-                                <h4>{{ .title }}</h4>
-                            </div>
-                            <div class="card-text">
-                                <p>{{ .text }}</p>
-                            </div>
-                            <div class="card-action">
-                                <div class="date-range typing-animation">
-                                    <span class="start-date">{{ .startDate }}</span>
-                                    <span class="date-separator">~</span>
-                                    {{ if .endDate }}
-                                        <span class="end-date">{{ .endDate }}</span>
-                                    {{ else }}
-                                        <span class="ongoing pulse-animation">진행중</span>
-                                    {{ end }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {{ end }}
-            </div>
-        </div>
-    </div>
+	<div class="container">
+		<div class="title-wrapper has-text-centered">
+			<h2 class="title is-2">{{ .Params.consulting.page_title }}</h2>
+			<h3 class="subtitle is-5 is-muted subtitle-multiline">{{ .Params.consulting.page_subtitle }}</h3>
+			<div class="divider is-centered"></div>
+	</div>
+			<div class="content-wrapper">
+					<div class="columns">
+							{{ range .Params.consulting.tiles }}
+							<div class="column is-one-third">
+									<a href="{{ .url }}" class="card-link">
+											<div class="feature-card is-bordered has-text-centered revealOnScroll delay-1" data-animation="fadeInLeft">
+													<div class="card-image-wrapper">
+															<img src="{{ printf "images/illustrations/icons/%s.png" .icon | relURL }}" class="card-image">
+													</div>
+													<div class="card-content">
+															<div class="card-title">
+																	<h4>{{ .title }}</h4>
+															</div>
+															<div class="card-text">
+																	<p>{{ .text }}</p>
+															</div>
+															<div class="card-action">
+																	<div class="date-range typing-animation">
+																			<span class="start-date">{{ .startDate }}</span>
+																			<span class="date-separator">~</span>
+																			{{ if .endDate }}
+																					<span class="end-date">{{ .endDate }}</span>
+																			{{ else }}
+																					<span class="ongoing pulse-animation">진행중</span>
+																			{{ end }}
+																	</div>
+															</div>
+													</div>
+											</div>
+									</a>
+							</div>
+							{{ end }}
+					</div>
+			</div>
+	</div>
 </section>
 
 <style>
@@ -186,6 +164,13 @@
     display: inline-block;
 }
 
+.subtitle-multiline {
+    white-space: pre-wrap;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
 .date-separator {
     margin: 0 0.5rem;
     color: #6c757d;
@@ -203,12 +188,27 @@
     background-color: #ff7900;
 }
 
+.card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-link:hover .feature-card {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.feature-card {
+    transition: all 0.3s ease;
+}
+
 /* 애니메이션 */
 .typing-animation {
-    border-right: 2px solid transparent;
     overflow: hidden;
     white-space: nowrap;
-    animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+    animation: typing 3s steps(40, end);  /* blink-caret 애니메이션 제거 */
 }
 
 .pulse-animation {
@@ -221,10 +221,10 @@
     to { width: 100% }
 }
 
-@keyframes blink-caret {
+/* @keyframes blink-caret {
     from, to { border-color: transparent }
     50% { border-color: #2c3e50 }
-}
+} */
 
 @keyframes pulse {
     0% {

@@ -1,7 +1,9 @@
 {{ define "main" }}
 
-{{ if eq .Layout "test" }}
-    {{ partial "single/test.html" . }}
+{{ if eq .Layout "course" }}
+    {{ partial "single/course-list.html" . }}
+{{ else if eq .Layout "edm" }}
+    {{ partial "single/course-edm.html" . }}
 {{ else }}
     {{ partial "single/single.html" . }}
 {{ end }}

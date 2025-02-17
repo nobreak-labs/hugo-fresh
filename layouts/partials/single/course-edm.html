@@ -1,0 +1,33 @@
+{{ partial "navbar.html" . }}
+{{ partial "navbar-clone.html" . }}
+
+<div class="course-container">
+    {{ if .Params.course_image }}
+        <img src="{{ printf "/images/courses/%s" .Params.course_image }}" alt="{{ .Title }} 과정 소개" class="course-image">
+    {{ end }}
+</div>
+
+<style>
+.course-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px); /* 네비게이션 바 높이를 뺀 전체 높이 */
+}
+
+.course-image {
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 768px) {
+    .course-container {
+        padding: 1rem;
+    }
+}
+</style>
