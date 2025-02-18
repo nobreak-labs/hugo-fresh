@@ -15,7 +15,7 @@
 									<a href="{{ .url }}" class="card-link">
 											<div class="feature-card is-bordered has-text-centered revealOnScroll delay-1" data-animation="fadeInLeft">
 													<div class="card-image-wrapper">
-															<img src="{{ printf "images/illustrations/icons/%s.png" .icon | relURL }}" class="card-image">
+															<img src="{{ printf "images/courses/%s.png" .icon | relURL }}" class="card-image">
 													</div>
 													<div class="card-content">
 															<div class="card-title">
@@ -25,16 +25,20 @@
 																	<p>{{ .text }}</p>
 															</div>
 															<div class="card-action">
-																	<div class="date-range typing-animation">
-																			<span class="start-date">{{ .startDate }}</span>
-																			<span class="date-separator">~</span>
-																			{{ if .endDate }}
-																					<span class="end-date">{{ .endDate }}</span>
-																			{{ else }}
-																					<span class="ongoing pulse-animation">진행중</span>
-																			{{ end }}
-																	</div>
-															</div>
+																<div class="date-range typing-animation">
+																		{{ if .startDate }}
+																				<span class="start-date">{{ .startDate }}</span>
+																				<span class="date-separator">~</span>
+																				{{ if .endDate }}
+																						<span class="end-date">{{ .endDate }}</span>
+																				{{ else }}
+																						<span class="ongoing pulse-animation">진행중</span>
+																				{{ end }}
+																		{{ else }}
+																				<span class="recruiting pulse-animation">모집중</span>
+																		{{ end }}
+																</div>
+														</div>
 													</div>
 											</div>
 									</a>
@@ -151,6 +155,11 @@
 
 .card-action {
     margin-top: 1rem;
+}
+
+.recruiting {
+    color: #3498db;  /* 파란색으로 변경하고 싶다면 이 색상을 조정하세요 */
+    font-weight: bold;
 }
 
 .date-range {
