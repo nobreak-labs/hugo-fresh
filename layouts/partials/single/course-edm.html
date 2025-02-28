@@ -2,9 +2,21 @@
 {{ partial "navbar-clone.html" . }}
 
 <div class="course-container">
-    {{ if .Params.course_image }}
-        <img src="{{ printf "/images/courses/%s" .Params.course_image }}" alt="{{ .Title }} 과정 소개" class="course-image">
-    {{ end }}
+    <div class="course-content">
+        {{ if .Params.course_image }}
+            <a href="{{ .Params.button_link }}" target="_blank" class="image-link">
+                <img src="{{ printf "/images/courses/%s" .Params.course_image }}" alt="{{ .Title }} 과정 소개" class="course-image">
+            </a>
+        {{ end }}
+        
+        {{ if .Params.button_link }}
+            <div class="button-container">
+                <a href="{{ .Params.button_link }}" target="_blank" class="course-button">
+                    {{ .Params.button_text | default "자세히 알아보기" }}
+                </a>
+            </div>
+        {{ end }}
+    </div>
 </div>
 
 <style>
@@ -19,15 +31,62 @@
     min-height: calc(100vh - 80px); /* 네비게이션 바 높이를 뺀 전체 높이 */
 }
 
+.course-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.image-link {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
 .course-image {
     max-width: 100%;
     height: auto;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.course-image:hover {
+    transform: translateY(-5px);
+}
+
+.button-container {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.course-button {
+    display: inline-block;
+    background-color: #4A7AFF;
+    color: white;
+    font-weight: bold;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.course-button:hover {
+    background-color: #3563E9;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 @media screen and (max-width: 768px) {
     .course-container {
         padding: 1rem;
+    }
+    
+    .course-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
     }
 }
 </style>
