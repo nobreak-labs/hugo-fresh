@@ -7,257 +7,268 @@
 			<h2 class="title is-2">{{ .Params.consulting.page_title }}</h2>
 			<h3 class="subtitle is-5 is-muted subtitle-multiline">{{ .Params.consulting.page_subtitle }}</h3>
 			<div class="divider is-centered"></div>
-	</div>
-			<div class="content-wrapper">
-					<div class="columns">
-							{{ range .Params.consulting.tiles }}
-							<div class="column is-one-third">
-									<a href="{{ .url }}" class="card-link">
-											<div class="feature-card is-bordered has-text-centered revealOnScroll delay-1" data-animation="fadeInLeft">
-													<div class="card-image-wrapper">
-															<img src="{{ printf "images/courses/%s.webp" .icon | relURL }}" class="card-image">
-													</div>
-													<div class="card-content">
-															<div class="card-title">
-																	<h4>{{ .title }}</h4>
-															</div>
-															<div class="card-text">
-																	<p>{{ .text }}</p>
-															</div>
-															<div class="card-action">
-																<div class="date-range typing-animation">
-																		{{ if .startDate }}
-																				<span class="start-date">{{ .startDate }}</span>
-																				<span class="date-separator">~</span>
-																				{{ if .endDate }}
-																						<span class="end-date">{{ .endDate }}</span>
-																				{{ else }}
-																						<span class="ongoing pulse-animation">진행중</span>
-																				{{ end }}
-																		{{ else }}
-																				<span class="recruiting pulse-animation">안내받기</span>
-																		{{ end }}
-																</div>
-														</div>
-													</div>
-											</div>
-									</a>
+		</div>
+		<div class="content-wrapper">
+			<div class="columns">
+				{{ range .Params.consulting.tiles }}
+
+				{{/* ─── 날짜 비교: "YY-MM-DD" 문자열 → 사전순 비교 (크로스-연도 포함) ─── */}}
+				{{/* 오늘: now.Format "06-01-02" → "26-05-06" */}}
+				{{ $today   := now.Format "06-01-02" }}
+				{{ $startD  := .startDate }}
+				{{ $endD    := .endDate   }}
+
+				{{/* ─── 상태 계산 ─── */}}
+				{{/*
+					upcoming : startDate 존재 & startDate > today (아직 시작 전)
+					ongoing  : startDate 지남, endDate 없거나 아직 미래
+					ended    : endDate 지남, 또는 날짜 없음(종료 과정)
+				*/}}
+				{{ $status := "ended" }}
+				{{ if and $startD (gt $startD $today) }}
+					{{ $status = "upcoming" }}
+				{{ else if $startD }}
+					{{ if or (not $endD) (gt $endD $today) }}
+						{{ $status = "ongoing" }}
+					{{ end }}
+				{{ end }}
+
+				<div class="column is-one-third">
+					<a href="{{ .url }}" class="card-link">
+						<div class="feature-card is-bordered has-text-centered revealOnScroll delay-1" data-animation="fadeInLeft">
+
+							<div class="card-image-wrapper">
+								<img src="{{ printf "images/courses/%s.webp" .icon | relURL }}" class="card-image">
 							</div>
-							{{ end }}
-					</div>
+
+							<div class="card-content">
+								<div class="card-title">
+									<h4>{{ .title }}</h4>
+								</div>
+
+								{{/* 날짜 표시 — ended면 숨김, endDate가 이미 지났으면 endDate도 숨김 */}}
+								{{ $showEnd := and $endD (gt $endD $today) }}
+								{{ if and (ne $status "ended") (or $startD $showEnd) }}
+								<div class="nb-course-dates">
+									{{ if $startD }}
+										{{ $sp := split $startD "-" }}
+										<span class="nb-course-date nb-course-date--start">
+											{{ printf "20%s.%s.%s" (index $sp 0) (index $sp 1) (index $sp 2) }}
+										</span>
+									{{ end }}
+									{{ if and $startD $showEnd }}
+										<span class="nb-course-date-sep">~</span>
+									{{ end }}
+									{{ if $showEnd }}
+										{{ $ep := split $endD "-" }}
+										<span class="nb-course-date nb-course-date--end">
+											{{ printf "20%s.%s.%s" (index $ep 0) (index $ep 1) (index $ep 2) }}
+										</span>
+									{{ end }}
+								</div>
+								{{ end }}
+
+								{{/* 액션 버튼 */}}
+								<div class="card-action">
+									{{ if eq $status "upcoming" }}
+										<span class="nb-course-btn nb-course-btn--primary">모집중</span>
+									{{ else if eq $status "ongoing" }}
+										<span class="nb-course-btn nb-course-btn--ongoing">진행중</span>
+									{{ else }}
+										<span class="nb-course-btn nb-course-btn--outline">안내받기</span>
+									{{ end }}
+								</div>
+							</div>
+
+						</div>
+					</a>
+				</div>
+				{{ end }}
 			</div>
+		</div>
 	</div>
 </section>
 
 <style>
-/* 배너 스타일 */
-.banner-container {
-    position: relative;
-    height: 500px;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
-}
-
-.image-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: #1a2b3c;
-}
-
-.image-wrapper::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.3);
-    z-index: 1;
-}
-
-.banner-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-}
-
-.empty-banner {
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.banner-title {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    width: 100%;
-    padding: 1rem;
-    z-index: 2;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.8);
-    font-weight: 600;
-    letter-spacing: 0.8px;
-}
-
-/* 컨설팅 섹션 스타일 */
-.feature-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow: hidden;
-    padding: 0 !important;
-    border: 1px solid #e5e5e5;
-}
-
-.card-image-wrapper {
-    position: relative;
-    padding-top: 100%;
-    width: 100%;
-    overflow: hidden;
-    margin: 0;
-    background-color: #f5f5f5;
-}
-
-.card-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-    margin: 0;
-    padding: 0;
-}
-
-.card-content {
-    padding: 1.5rem;
-    background: white;
-    margin-top: auto;
-}
-
-.card-title {
-    margin-bottom: 1rem;
-}
-
-.card-text {
-    margin-bottom: 1rem;
-}
-
-.card-action {
-    margin-top: 1rem;
-}
-
-.recruiting {
-    color: #3498db;  /* 파란색으로 변경하고 싶다면 이 색상을 조정하세요 */
-    font-weight: bold;
-}
-
-.date-range {
-    font-family: 'Courier New', monospace;
-    font-size: 1.1rem;
-    color: #2c3e50;
-    padding: 0.5rem 1rem;
-    background: #f8f9fa;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    display: inline-block;
-}
-
+/* ── 기존 레이아웃 스타일 ────────────────────────────── */
 .subtitle-multiline {
-    white-space: pre-wrap;
-    max-width: 800px;
-    margin: 0 auto;
-    line-height: 1.6;
-}
-
-.date-separator {
-    margin: 0 0.5rem;
-    color: #6c757d;
-}
-
-.ongoing {
-    color: #2ecc71;
-    font-weight: bold;
+	white-space: pre-wrap;
+	max-width: 800px;
+	margin: 0 auto;
+	line-height: 1.6;
 }
 
 .divider {
-    margin: 2rem auto;
-    width: 50px;
-    height: 3px;
-    background-color: #ff7900;
-}
-
-.card-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-}
-
-.card-link:hover .feature-card {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
+	margin: 2rem auto;
+	width: 50px;
+	height: 3px;
+	background-color: #ff7900;
 }
 
 .feature-card {
-    transition: all 0.3s ease;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	overflow: hidden;
+	padding: 0 !important;
+	border: 1px solid #e5e7eb;
+	border-radius: 10px;
+	transition: all 0.3s ease;
+	background: #ffffff;
 }
 
-/* 애니메이션 */
-.typing-animation {
-    overflow: hidden;
-    white-space: nowrap;
-    animation: typing 3s steps(40, end);  /* blink-caret 애니메이션 제거 */
+.card-image-wrapper {
+	position: relative;
+	padding-top: 100%;
+	width: 100%;
+	overflow: hidden;
+	background-color: #f5f5f5;
 }
 
-.pulse-animation {
-    animation: pulse 2s infinite;
-    display: inline-block;
+.card-image {
+	position: absolute;
+	top: 0; left: 0;
+	width: 100%; height: 100%;
+	object-fit: fill;
 }
 
-@keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
+.card-content {
+	padding: 1.5rem;
+	background: white;
+	margin-top: auto;
 }
 
-/* @keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: #2c3e50 }
-} */
+.card-title { margin-bottom: 0.75rem; }
+.card-action { margin-top: 1.25rem; }
 
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.05);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+.card-link {
+	display: block;
+	text-decoration: none;
+	color: inherit;
 }
 
-/* 반응형 스타일 */
+.card-link:hover .feature-card {
+	transform: translateY(-6px);
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+	border-color: rgba(0, 180, 216, 0.3);
+}
+
+
+/* ── 날짜 표시 ──────────────────────────────────────── */
+.nb-course-dates {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	margin: 0.75rem 0 0.5rem;
+	font-family: 'Pretendard Variable', sans-serif;
+}
+
+.nb-course-date {
+	font-size: 1rem;
+	font-weight: 700;
+	padding: 5px 14px;
+	border-radius: 6px;
+	letter-spacing: 0.02em;
+}
+
+.nb-course-date--start {
+	color: #0369a1;
+	background: #e0f2fe;
+	border: 1.5px solid #7dd3fc;
+}
+
+.nb-course-date--end {
+	color: #6d28d9;
+	background: #ede9fe;
+	border: 1.5px solid #c4b5fd;
+}
+
+.nb-course-date-sep {
+	color: #6b7280;
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+/* ── 액션 버튼 ──────────────────────────────────────── */
+.nb-course-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	padding: 11px 26px;
+	border-radius: 8px;
+	font-size: 0.95rem;
+	font-weight: 700;
+	cursor: pointer;
+	font-family: 'Pretendard Variable', sans-serif;
+	transition: all 0.22s ease;
+	border: 2px solid transparent;
+	letter-spacing: 0.01em;
+	text-decoration: none;
+}
+
+/* 모집중: 진한 남색 배경 + 흰 텍스트 — 신뢰감 있는 견고한 디자인 */
+.nb-course-btn--primary {
+	background: #1e3a5f;
+	color: #ffffff;
+	border-color: #1e3a5f;
+	box-shadow: 0 3px 0 #0f1f38, 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.nb-course-btn--primary::after {
+	content: '→';
+	font-style: normal;
+	font-weight: 400;
+	transition: transform 0.2s ease;
+}
+
+.card-link:hover .nb-course-btn--primary {
+	background: #16304f;
+	box-shadow: 0 1px 0 #0f1f38, 0 4px 12px rgba(0, 0, 0, 0.18);
+	transform: translateY(2px);
+}
+
+.card-link:hover .nb-course-btn--primary::after {
+	transform: translateX(4px);
+}
+
+/* 진행중 */
+.nb-course-btn--ongoing {
+	background: #065f46;
+	color: #ffffff;
+	border-color: #065f46;
+	box-shadow: 0 3px 0 #022c22, 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 안내받기: 테두리형 — 차분하고 명확한 CTA */
+.nb-course-btn--outline {
+	background: #ffffff;
+	color: #374151;
+	border-color: #d1d5db;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+}
+
+.nb-course-btn--outline::after {
+	content: '→';
+	font-style: normal;
+	font-weight: 400;
+	color: #9ca3af;
+	transition: all 0.2s ease;
+}
+
+.card-link:hover .nb-course-btn--outline {
+	border-color: #1e3a5f;
+	color: #1e3a5f;
+	box-shadow: 0 4px 14px rgba(30, 58, 95, 0.12);
+}
+
+.card-link:hover .nb-course-btn--outline::after {
+	color: #1e3a5f;
+	transform: translateX(4px);
+}
+
+/* ── 반응형 ─────────────────────────────────────────── */
 @media screen and (max-width: 768px) {
-    .banner-container {
-        height: 300px;
-    }
-
-    .column.is-one-third {
-        width: 100%;
-    }
+	.column.is-one-third { width: 100%; }
 }
 </style>

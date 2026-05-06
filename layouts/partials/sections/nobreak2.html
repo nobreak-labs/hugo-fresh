@@ -3,36 +3,30 @@
 {{- $subtitle := index $section2 "subtitle" }}
 {{- $features := index $section2 "features" }}
 
-<section class="section is-medium" id="section2">
-  <div class="container">
-    <div class="columns">
-      <div class="column is-10 is-offset-1" style="margin-left: 5%;">
-        <h1 class="title section-title">{{ $title }}</h1>
-        <h3 class="subtitle is-5 is-muted">{{ $subtitle }}</h3>
-        <div class="divider"></div>
-      </div>
+<section class="nb-services" id="section2">
+  <div class="nb-services__container">
+    <div class="nb-services__header nb-reveal">
+      <div class="nb-services__accent-bar"></div>
+      <h2>{{ $title }}</h2>
+      <p>{{ $subtitle }}</p>
     </div>
-    <div class="columns">
-      <div class="column is-10 is-offset-1">
-        {{- range $features }}
-        <article class="media icon-box">
-          <figure class="media-left">
-            <p class="image">
-              <!-- <img src="{{ printf "images/illustrations/icons/%s.svg" .icon | relURL }}"> -->
-							<img src="{{ printf "images/illustrations/icons/%s.png" .icon | relURL }}">
-            </p>
-          </figure>
-          <div class="media-content mt-50">
-            <div class="content">
-              <p>
-                <a href="{{ .url }}" class="icon-box-title">{{ .title }}</a>
-                <span class="icon-box-text">{{ .text | markdownify }}</span>
-              </p>
-            </div>
-          </div>
-        </article>
-        {{- end }}
-      </div>
+    <div class="nb-services__grid">
+      {{- range $i, $feature := $features }}
+      <article class="nb-service-card nb-reveal nb-reveal--d{{ add $i 1 }}">
+        <div class="nb-service-card__cover">
+          <img src="{{ printf "images/illustrations/icons/%s.png" $feature.icon | relURL }}"
+               alt="{{ $feature.title }}">
+          <div class="nb-service-card__cover-shade"></div>
+        </div>
+        <div class="nb-service-card__body">
+          <h3 class="nb-service-card__title">{{ $feature.title }}</h3>
+          <div class="nb-service-card__text">{{ $feature.text | markdownify }}</div>
+          <a href="{{ $feature.url }}" class="nb-service-card__link">
+            자세히 보기 <em class="nb-service-card__arrow">&#x2192;</em>
+          </a>
+        </div>
+      </article>
+      {{- end }}
     </div>
   </div>
 </section>

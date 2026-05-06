@@ -3,12 +3,16 @@
 {{- $navbarLogo       := .Site.Params.navbarlogo }}
 {{- $navbarLogoWidth  := .Site.Params.navbarlogo.width | default 112 }}
 {{- $navbarLogoHeight := .Site.Params.navbarlogo.height | default 28 }}
-<nav class="navbar is-fresh is-transparent no-shadow" role="navigation" aria-label="main navigation">
+<nav class="navbar is-fresh is-transparent no-shadow{{ if not .IsHome }} nb-page-nav{{ end }}" role="navigation" aria-label="main navigation">
  <div class="container">
    <div class="navbar-brand">
      {{- if $navbarLogo}}
      <a class="navbar-item" href="{{ $navbarLogo.link }}">
-       <img src="{{ printf "images/%s" $navbarLogo.image | relURL }}" alt="" width="{{ $navbarLogoWidth }}" height="{{ $navbarLogoHeight }}">
+       {{- if .IsHome }}
+       <img src="{{ "images/logos/nobreak_ci_retina_w.png" | relURL }}" alt="{{ .Site.Title }}" width="{{ $navbarLogoWidth }}" height="{{ $navbarLogoHeight }}">
+       {{- else }}
+       <img src="{{ printf "images/%s" $navbarLogo.image | relURL }}" alt="{{ .Site.Title }}" width="{{ $navbarLogoWidth }}" height="{{ $navbarLogoHeight }}">
+       {{- end }}
      </a>
      {{- end}}
 

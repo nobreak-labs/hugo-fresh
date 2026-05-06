@@ -1,0 +1,863 @@
+/* ==========================================================================
+Nobreak Modern Design System v2
+========================================================================== */
+
+// ── Variables ──────────────────────────────────────────────────────────────
+$nb-bg-dark:    #0B1220;
+$nb-bg-darker:  #060D19;
+$nb-cyber:      #00B4D8;
+$nb-white:      #ffffff;
+$nb-text:       #E2E8F0;
+$nb-text-muted: #94A3B8;
+$nb-glow:       rgba(0, 180, 216, 0.35);
+$nb-font:       'Pretendard Variable', 'Open Sans', sans-serif;
+
+// ── Navbar: Inner pages (non-hero) ─────────────────────────────────────────
+.navbar.is-fresh.nb-page-nav {
+  background: #ffffff !important;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08) !important;
+
+  .navbar-item,
+  .navbar-link {
+    color: #374151 !important;
+    font-family: $nb-font;
+    font-weight: 500;
+
+    &:hover,
+    &:focus {
+      color: $nb-cyber !important;
+      background: transparent !important;
+    }
+  }
+
+  .navbar-link::after {
+    border-color: #374151 !important;
+  }
+
+  .navbar-dropdown {
+    border-top: 2px solid $nb-cyber;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+    .navbar-item {
+      color: #374151 !important;
+      font-family: $nb-font;
+
+      &:hover {
+        color: $nb-cyber !important;
+        background: #F9FAFB !important;
+      }
+    }
+  }
+}
+
+// ── Navbar: Hero wrapper (homepage) ────────────────────────────────────────
+.nb-hero-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 640px;
+  overflow: hidden;
+
+  // Hero navbar: transparent, floating over dark bg → white text
+  > .navbar.is-fresh {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    background: transparent !important;
+    box-shadow: none !important;
+
+    .navbar-item,
+    .navbar-link {
+      color: rgba(255, 255, 255, 0.88) !important;
+      font-family: $nb-font;
+      font-weight: 500;
+
+      &:hover,
+      &:focus {
+        color: $nb-cyber !important;
+        background: transparent !important;
+      }
+    }
+
+    .navbar-link::after {
+      border-color: rgba(255, 255, 255, 0.88) !important;
+    }
+
+    .navbar-dropdown {
+      background: #fff;
+      border-top: 2px solid $nb-cyber;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+
+      .navbar-item {
+        color: #374151 !important;
+        font-family: $nb-font;
+
+        &:hover {
+          color: $nb-cyber !important;
+          background: #F9FAFB !important;
+        }
+      }
+    }
+  }
+}
+
+// ── Navbar-clone: white (all pages on scroll) ──────────────────────────────
+#navbar-clone.is-active {
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08) !important;
+
+  .navbar-item,
+  .navbar-link {
+    color: #374151 !important;
+    font-family: $nb-font;
+
+    &:hover {
+      color: $nb-cyber !important;
+      background: transparent !important;
+    }
+  }
+
+  .navbar-link::after {
+    border-color: #374151 !important;
+  }
+
+  .navbar-dropdown {
+    background: #ffffff !important;
+    border-top: 2px solid $nb-cyber !important;
+
+    .navbar-item {
+      color: #374151 !important;
+
+      &:hover {
+        color: $nb-cyber !important;
+        background: #F9FAFB !important;
+      }
+    }
+  }
+}
+
+// ── Hero ───────────────────────────────────────────────────────────────────
+.nb-hero {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    // Pure CSS background — no image dependency
+    background-color: #050c18;
+    background-image:
+      radial-gradient(ellipse 65% 55% at 72% 38%, rgba(0, 140, 210, 0.22) 0%, transparent 100%),
+      radial-gradient(ellipse 50% 60% at 8%  80%, rgba(0,  50, 160, 0.16) 0%, transparent 100%),
+      radial-gradient(ellipse 40% 40% at 88% 85%, rgba(0,  80, 140, 0.10) 0%, transparent 100%);
+    animation: nbBgShift 16s ease-in-out infinite alternate;
+  }
+
+  &__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 180, 216, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 180, 216, 0.055) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  // Floating glow orbs
+  &__orb {
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 150, 220, 0.15) 0%, transparent 68%);
+    top: -160px;
+    right: 2%;
+    pointer-events: none;
+    animation: nbOrbFloat 10s ease-in-out infinite;
+  }
+
+  &__orb2 {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 80, 200, 0.12) 0%, transparent 65%);
+    bottom: -80px;
+    left: 5%;
+    pointer-events: none;
+    animation: nbOrbFloat 13s ease-in-out 3s infinite reverse;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 80px 8% 0;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: $nb-cyber;
+    text-transform: uppercase;
+    border: 1px solid rgba(0, 180, 216, 0.38);
+    border-radius: 100px;
+    padding: 7px 18px;
+    margin-bottom: 28px;
+    font-family: $nb-font;
+    opacity: 0;
+    animation: nbFadeUp 0.8s ease-out 0.2s forwards;
+
+    &::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: $nb-cyber;
+      box-shadow: 0 0 10px $nb-cyber;
+      animation: nbDotPulse 2s ease-in-out infinite;
+    }
+  }
+
+  &__title {
+    font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+    font-weight: 800;
+    color: $nb-white;
+    line-height: 1.12;
+    margin: 0 0 24px;
+    font-family: $nb-font;
+    opacity: 0;
+    animation: nbFadeUp 0.8s ease-out 0.4s forwards;
+    letter-spacing: -0.02em;
+  }
+
+  &__subtitle {
+    font-size: clamp(1rem, 1.8vw, 1.18rem);
+    color: rgba(226, 232, 240, 0.82);
+    line-height: 1.65;
+    margin: 0 0 44px;
+    max-width: 560px;
+    min-height: 3.2em;
+    font-family: $nb-font;
+    opacity: 0;
+    animation: nbFadeUp 0.8s ease-out 0.6s forwards;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    opacity: 0;
+    animation: nbFadeUp 0.8s ease-out 0.8s forwards;
+  }
+}
+
+// Typing cursor
+.nb-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: $nb-cyber;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: nbBlink 0.9s step-end infinite;
+}
+
+// Scroll indicator
+.nb-scroll-down {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+
+  span {
+    display: block;
+    width: 26px;
+    height: 44px;
+    border: 2px solid rgba(255, 255, 255, 0.28);
+    border-radius: 13px;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 7px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 9px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.65);
+      animation: nbScrollBounce 1.6s ease-in-out infinite;
+    }
+  }
+}
+
+// ── Buttons ────────────────────────────────────────────────────────────────
+.nb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 30px;
+  border-radius: 7px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: $nb-font;
+  transition: all 0.25s ease;
+  border: 2px solid transparent;
+
+  &--primary {
+    background: $nb-cyber;
+    color: #001a22;
+    border-color: $nb-cyber;
+
+    &:hover {
+      background: lighten($nb-cyber, 8%);
+      border-color: lighten($nb-cyber, 8%);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px $nb-glow;
+      color: #001a22;
+    }
+  }
+
+  &--outline {
+    background: transparent;
+    color: $nb-white;
+    border-color: rgba(255, 255, 255, 0.38);
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-2px);
+      color: $nb-white;
+    }
+  }
+}
+
+// ── Stats Section ──────────────────────────────────────────────────────────
+.nb-stats {
+  background: #F8FAFC;
+  padding: 96px 0;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  // Top accent line
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $nb-cyber, transparent);
+  }
+
+  &__container {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 72px;
+
+    h2 {
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 16px;
+      font-family: $nb-font;
+    }
+
+    p {
+      color: #6B7280;
+      font-size: 1rem;
+      line-height: 1.75;
+      max-width: 580px;
+      margin: 0 auto;
+      font-family: $nb-font;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: #E5E7EB;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+
+    @media (max-width: 767px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.nb-stat {
+  background: #ffffff;
+  padding: 52px 40px;
+  text-align: center;
+  transition: background 0.3s ease;
+  position: relative;
+
+  &:hover {
+    background: rgba(0, 180, 216, 0.04);
+  }
+
+  &__number {
+    font-size: clamp(3.2rem, 6vw, 5.2rem);
+    font-weight: 800;
+    color: $nb-cyber;
+    line-height: 1;
+    margin-bottom: 20px;
+    font-family: $nb-font;
+    letter-spacing: -0.02em;
+  }
+
+  &__label {
+    font-size: 0.95rem;
+    color: #6B7280;
+    line-height: 1.55;
+    font-family: $nb-font;
+  }
+
+  &__line {
+    width: 36px;
+    height: 2px;
+    background: linear-gradient(90deg, $nb-cyber, rgba(0, 180, 216, 0.2));
+    margin: 20px auto 0;
+    border-radius: 1px;
+  }
+}
+
+// ── Services Section ───────────────────────────────────────────────────────
+.nb-services {
+  background: #f8fafc;
+  padding: 96px 0;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+  }
+
+  &__header {
+    margin-bottom: 60px;
+
+    h2 {
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 14px;
+      font-family: $nb-font;
+    }
+
+    p {
+      color: #6B7280;
+      font-size: 1rem;
+      line-height: 1.75;
+      max-width: 580px;
+      font-family: $nb-font;
+    }
+  }
+
+  &__accent-bar {
+    width: 44px;
+    height: 3px;
+    background: $nb-cyber;
+    border-radius: 2px;
+    margin-bottom: 18px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+
+    @media (max-width: 767px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.nb-service-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #E5E7EB;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.12);
+    border-color: rgba(0, 180, 216, 0.3);
+
+    .nb-service-card__cover img {
+      transform: scale(1.06);
+    }
+
+    .nb-service-card__arrow {
+      transform: translateX(5px);
+      color: $nb-cyber;
+    }
+  }
+
+  // Full-width cover image at top
+  &__cover {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background: #0B1220;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+
+    &-shade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(5, 12, 24, 0.15) 0%,
+        rgba(5, 12, 24, 0.45) 100%
+      );
+    }
+  }
+
+  &__body {
+    padding: 36px 40px 32px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 14px;
+    font-family: $nb-font;
+    line-height: 1.3;
+  }
+
+  &__text {
+    font-size: 0.92rem;
+    color: #6B7280;
+    line-height: 1.8;
+    flex: 1;
+    margin-bottom: 28px;
+    font-family: $nb-font;
+
+    strong {
+      color: #374151;
+      font-weight: 600;
+    }
+
+    p { margin-bottom: 0.5em; }
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #374151;
+    text-decoration: none;
+    padding-top: 18px;
+    border-top: 1px solid #F3F4F6;
+    margin-top: auto;
+    transition: color 0.2s;
+    font-family: $nb-font;
+
+    &:hover { color: $nb-cyber; }
+  }
+
+  &__arrow {
+    display: inline-block;
+    transition: all 0.2s ease;
+    font-style: normal;
+  }
+}
+
+// ── Expertise Section ──────────────────────────────────────────────────────
+.nb-expertise {
+  background: #ffffff;
+  padding: 96px 0;
+  border-top: 1px solid #F3F4F6;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 64px;
+
+    h2 {
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 16px;
+      font-family: $nb-font;
+    }
+
+    p {
+      color: #6B7280;
+      font-size: 1rem;
+      line-height: 1.75;
+      max-width: 540px;
+      margin: 0 auto;
+      font-family: $nb-font;
+    }
+  }
+
+  &__accent-bar {
+    width: 40px;
+    height: 3px;
+    background: $nb-cyber;
+    border-radius: 2px;
+    margin: 0 auto 20px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+
+    @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 640px)  { grid-template-columns: 1fr; }
+  }
+}
+
+.nb-exp-card {
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 36px 28px;
+  text-align: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: $nb-bg-dark;
+    border-color: rgba(0, 180, 216, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+
+    .nb-exp-card__icon { color: $nb-cyber; }
+    .nb-exp-card__title { color: $nb-white; }
+    .nb-exp-card__text  { color: $nb-text-muted; }
+  }
+
+  &__icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 20px;
+    color: $nb-cyber;
+    transition: color 0.3s;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 12px;
+    font-family: $nb-font;
+    line-height: 1.35;
+    transition: color 0.3s;
+  }
+
+  &__text {
+    font-size: 0.875rem;
+    color: #6B7280;
+    line-height: 1.7;
+    font-family: $nb-font;
+    transition: color 0.3s;
+  }
+}
+
+// ── CTA Section ────────────────────────────────────────────────────────────
+.nb-cta {
+  background: linear-gradient(135deg, #EFF6FF 0%, #F0F9FF 60%, #E0F2FE 100%);
+  padding: 80px 5%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid #DBEAFE;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 180, 216, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 180, 216, 0.07) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  &__title {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 16px;
+    font-family: $nb-font;
+    line-height: 1.25;
+  }
+
+  &__sub {
+    font-size: 1rem;
+    color: #6B7280;
+    line-height: 1.7;
+    margin-bottom: 40px;
+    font-family: $nb-font;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+// Dark-background outline button (for light sections)
+.nb-btn--outline-dark {
+  background: transparent;
+  color: #374151;
+  border-color: rgba(55, 65, 81, 0.4);
+
+  &:hover {
+    border-color: $nb-cyber;
+    color: $nb-cyber;
+    background: rgba(0, 180, 216, 0.06);
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+}
+
+// ── Footer ─────────────────────────────────────────────────────────────────
+footer.footer-dark.nb-footer {
+  background: $nb-bg-darker;
+  border-top: 1px solid rgba(0, 180, 216, 0.12);
+
+  .contact-info p {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.88rem;
+    font-family: $nb-font;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .copyright {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.8rem;
+    font-family: $nb-font;
+    margin-top: 6px;
+  }
+
+  .level-item .icon {
+    color: $nb-cyber !important;
+    font-size: 1.1rem;
+    transition: all 0.25s;
+
+    &:hover {
+      color: $nb-white !important;
+    }
+  }
+}
+
+// ── Scroll Reveal ──────────────────────────────────────────────────────────
+.nb-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+
+  &.nb-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &--d1 { transition-delay: 0.12s; }
+  &--d2 { transition-delay: 0.24s; }
+  &--d3 { transition-delay: 0.36s; }
+}
+
+// ── Keyframes ──────────────────────────────────────────────────────────────
+@keyframes nbFadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nbDotPulse {
+  0%, 100% { box-shadow: 0 0 8px currentColor; opacity: 1; }
+  50%       { box-shadow: 0 0 3px currentColor; opacity: 0.5; }
+}
+
+@keyframes nbBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes nbScrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0);   opacity: 1; }
+  60%       { transform: translateX(-50%) translateY(9px); opacity: 0.25; }
+}
+
+@keyframes nbOrbFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-40px) scale(1.05); }
+}
+
+@keyframes nbBgShift {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}

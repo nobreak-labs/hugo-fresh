@@ -1,85 +1,25 @@
-{{- $hero       := .Site.Params.hero }}
-{{- $title      := index $hero "title" }}
-{{- $subtitle   := index $hero "subtitle" }}
-{{- $image      := index $hero "image" }}
+{{- $hero     := .Site.Params.hero }}
+{{- $title    := index $hero "title" }}
+{{- $image    := index $hero "image" }}
 
-<div class="hero-section">
-  <div class="hero-image">
-    <img src="{{ printf "images/%s" $image | relURL }}" alt="Banner Image">
+<div class="nb-hero" role="banner">
+  <div class="nb-hero__bg"></div>
+  <div class="nb-hero__grid" aria-hidden="true"></div>
+  <div class="nb-hero__orb"  aria-hidden="true"></div>
+  <div class="nb-hero__orb2" aria-hidden="true"></div>
+
+  <div class="nb-hero__content">
+    <div class="nb-hero__badge">Cybersecurity &amp; Education Experts</div>
+    <h1 class="nb-hero__title">{{ $title }}</h1>
+    <p class="nb-hero__subtitle">
+      <span id="nb-typing"></span><span class="nb-cursor" aria-hidden="true"></span>
+    </p>
+    <div class="nb-hero__actions">
+      <a href="/consulting/security/" class="nb-btn nb-btn--primary">서비스 알아보기</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSeBy9CpVB10j64cskJE1tEsSXK9lJ4zl-f73oH1zaFvTfcrUA/viewform"
+         class="nb-btn nb-btn--outline" target="_blank" rel="noopener noreferrer">컨설팅 문의</a>
+    </div>
   </div>
-  <div class="hero-content">
-    <h1 class="title animate-text">{{ $title }}</h1>
-    {{ with $subtitle }}
-    <h2 class="subtitle animate-text">{{ . }}</h2>
-    {{ end }}
-  </div>
+
+  <div class="nb-scroll-down" aria-hidden="true"><span></span></div>
 </div>
-
-<style>
-
-  /* Hero 섹션 전체 화면 너비 적용 */
-  .hero-section {
-    position: relative;
-    width: 100%;
-    height: 50vh; /* 배너 높이를 절반으로 설정 */
-    display: flex;
-    align-items: center; /* 세로 중앙 정렬 */
-    justify-content: flex-start; /* 왼쪽 정렬 */
-    padding-left: 10%; /* 왼쪽 여백 추가 */
-    overflow: hidden;
-  }
-
-  /* 배경 이미지 설정 (가운데 정렬) */
-  .hero-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .hero-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 가로 꽉 채우고, 세로 비율 유지 */
-    object-position: center; /* 이미지의 중앙 부분이 보이도록 조정 */
-    filter: brightness(0.8); /* 배경을 살짝 어둡게 */
-  }
-
-  /* 텍스트 스타일 */
-  .hero-content {
-    position: relative;
-    max-width: 600px;
-  }
-
-  /* 글자 애니메이션 효과 */
-  .animate-text {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 1.2s ease-out forwards;
-  }
-
-  /* 애니메이션 키프레임 */
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* 애니메이션 지연 시간 */
-  .animate-text:nth-child(1) {
-		 animation-delay: 0.3s;
-		 color:#ffffff;
-		 font-size: 3em;
-		}
-
-  .animate-text:nth-child(2) {
-		 animation-delay: 0.6s;
-		 color:#ffffff;
-		 }
-</style>

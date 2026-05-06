@@ -1,297 +1,378 @@
 {{ partial "navbar.html" . }}
 {{ partial "navbar-clone.html" . }}
 
-<section class="section banner-section">
-    <div class="hero-body" style='padding: 0;'>
-        <div class="banner-container">
-            {{ $image := .Params.banner_image }}
-            {{ if $image }}
-                <div class="image-wrapper">
-                    <img src="{{ printf "/images/banners/%s" $image }}" alt="{{ $.Title }} 배너" class="banner-image">
-                    <div class="banner-title">
-                        <h1 class="title is-2" style="color: white;">{{ .Title }}</h1>
+{{/* ── 배너 ──────────────────────────────────────────────── */}}
+{{ $image := .Params.banner_image }}
+<div class="nb-banner{{ if not $image }} nb-banner--dark{{ end }}">
+    {{ if $image }}
+    <div class="nb-banner__bg">
+        <img src="{{ printf "/images/banners/%s" $image }}" alt="{{ $.Title }} 배너" class="nb-banner__img">
+        <div class="nb-banner__overlay"></div>
+    </div>
+    {{ end }}
+    <div class="nb-banner__content">
+        <p class="nb-banner__eyebrow">NOBREAK</p>
+        <h1 class="nb-banner__title">{{ .Title }}</h1>
+        <div class="nb-banner__line"></div>
+    </div>
+</div>
+
+{{/* ── 섹션 서브 네비게이션 ───────────────────────────────── */}}
+{{ $section := .CurrentSection }}
+{{ $siblings := $section.RegularPages }}
+{{ if gt (len $siblings) 1 }}
+<nav class="nb-subnav" aria-label="섹션 내 페이지">
+    <div class="nb-subnav__inner">
+        {{ range $siblings }}
+        <a href="{{ .Permalink }}" class="nb-subnav__link{{ if eq . $ }} nb-subnav__link--active{{ end }}">
+            {{ .Title }}
+        </a>
+        {{ end }}
+    </div>
+</nav>
+{{ end }}
+
+{{/* ── 콘텐츠 본문 ─────────────────────────────────────────── */}}
+<section class="nb-page-content">
+    <div class="nb-page-content__container">
+        {{ if eq .Title "연혁 및 사업실적" }}
+            {{/* 연혁: 아코디언 특수 처리 */}}
+            <div class="nb-content">
+                <p class="nb-content__lead">{{ index (split .RawContent "\n\n") 0 }}</p>
+                {{ $sections := split .RawContent "## " }}
+                {{ range after 1 $sections }}
+                    {{ $lines := split . "\n" }}
+                    {{ $year  := index $lines 0 }}
+                    <div class="nb-history-item">
+                        <button class="nb-history-item__header" aria-expanded="false">
+                            <span class="nb-history-item__year">{{ $year }}</span>
+                            <span class="nb-history-item__icon" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </span>
+                        </button>
+                        <div class="nb-history-item__body">
+                            <div class="nb-history-item__content">
+                                {{ delimit (after 1 $lines) "\n" | markdownify }}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            {{ else }}
-                <div class="empty-banner">
-                    <div class="banner-title">
-                        <h1 class="title is-2" style="color: #333;">{{ .Title }}</h1>
-                    </div>
-                </div>
-            {{ end }}
-        </div>
+                {{ end }}
+            </div>
+        {{ else }}
+            <div class="nb-content">
+                {{ .Content }}
+            </div>
+        {{ end }}
     </div>
 </section>
 
 <style>
-
-.banner-container {
+/* ── 배너 ────────────────────────────────────────────────── */
+.nb-banner {
     position: relative;
-    height: 500px;  /* 300px에서 500px로 증가 */
     width: 100vw;
+    height: 340px;
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
-}
-
-.image-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: #1a2b3c;
-}
-
-.image-wrapper::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.3); /* 배경에 색상 오버레이 */
-    z-index: 1; /* 텍스트 위에 오버레이가 오도록 설정 */
-}
-
-.banner-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-}
-
-.empty-banner {
-    width: 100%;
-    height: 100%;
-    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
-.banner-title {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    width: 100%;
-    padding: 1rem;
-    z-index: 2;
-    background: rgba(0, 0, 0, 0.3); /* 배경을 좀 더 진하게 해서 글자가 잘 보이도록 */
-    border-radius: 8px; /* 모서리 둥글게 */
-    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.8); /* 텍스트 그림자 강화 */
-    font-weight: 600; /* 폰트 두께를 좀 더 두껍게 */
-    letter-spacing: 0.8px; /* 자간을 조금 더 넓게 */
+.nb-banner--dark {
+    background: linear-gradient(135deg, #050c18 0%, #0b1a2e 50%, #0d1f38 100%);
 }
 
-.image-wrapper .banner-title {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.nb-banner__bg { position: absolute; inset: 0; }
+.nb-banner__img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+.nb-banner__overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(5,12,24,.72) 0%, rgba(5,12,24,.55) 50%, rgba(5,12,24,.68) 100%);
 }
 
-/* 콘텐츠 영역 스타일 */
-.section.is-medium {
-    padding: 2rem 1.5rem;
+.nb-banner__content { position: relative; z-index: 2; text-align: center; padding: 0 2rem; }
+.nb-banner__eyebrow {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.22em;
+    color: #00B4D8; text-transform: uppercase; margin-bottom: 14px;
+    font-family: 'Pretendard Variable', 'Open Sans', sans-serif;
+}
+.nb-banner__title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: #ffffff;
+    margin: 0 0 20px; letter-spacing: -0.02em; line-height: 1.15;
+    font-family: 'Pretendard Variable', 'Open Sans', sans-serif;
+    text-shadow: 0 2px 24px rgba(0,0,0,.3);
+}
+.nb-banner__line { width: 40px; height: 3px; background: #00B4D8; border-radius: 2px; margin: 0 auto; }
+
+@media screen and (max-width: 768px) { .nb-banner { height: 240px; } }
+
+/* ── 서브 네비게이션 ─────────────────────────────────────── */
+.nb-subnav {
+    background: #ffffff;
+    border-bottom: 1px solid #E5E7EB;
+    position: sticky;
+    top: 52px;
+    z-index: 10;
 }
 
-.section .container {
-    max-width: 1344px;
+.nb-subnav__inner {
+    max-width: 960px;
     margin: 0 auto;
+    padding: 0 5%;
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.nb-subnav__inner::-webkit-scrollbar { display: none; }
+
+.nb-subnav__link {
+    display: block;
+    padding: 15px 18px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #6B7280;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s;
+    font-family: 'Pretendard Variable', 'Open Sans', sans-serif;
+}
+.nb-subnav__link:hover { color: #00B4D8; border-bottom-color: rgba(0,180,216,.35); }
+.nb-subnav__link--active { color: #00B4D8; border-bottom-color: #00B4D8; font-weight: 700; }
+
+/* ── 페이지 콘텐츠 ───────────────────────────────────────── */
+.nb-page-content {
+    padding: 64px 0 96px;
 }
 
-.section .content {
+.nb-page-content__container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+/* ── 콘텐츠 타이포그래피 ─────────────────────────────────── */
+.nb-content {
+    font-family: 'Pretendard Variable', 'Open Sans', sans-serif;
+}
+
+/* 리드 문단 */
+.nb-content > p:first-child,
+.nb-content__lead {
     font-size: 1.1rem;
-    line-height: 1.8;
+    color: #374151;
+    line-height: 1.85;
+    margin-bottom: 48px;
+    padding: 24px 28px;
+    background: #F8FAFC;
+    border-left: 4px solid #00B4D8;
+    border-radius: 0 8px 8px 0;
 }
 
-/* 연혁 페이지용 아코디언 스타일 */
-.history-year {
-    margin-bottom: 1rem;
-    border: 1px solid #eee;
-    border-radius: 4px;
+/* H2 섹션 헤더 */
+.nb-content h2 {
+    font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+    font-weight: 700;
+    color: #111827;
+    margin: 52px 0 18px;
+    padding-left: 16px;
+    border-left: 4px solid #00B4D8;
+    line-height: 1.35;
+    font-family: 'Pretendard Variable', 'Open Sans', sans-serif;
 }
 
-.history-year-title {
-    background-color: #dceefb; /* 연한 회색 배경 */
-    padding: 1rem;
+/* 첫번째 h2는 상단 마진 줄이기 */
+.nb-content h2:first-of-type { margin-top: 24px; }
+
+/* H3 */
+.nb-content h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin: 28px 0 12px;
+    font-family: 'Pretendard Variable', 'Open Sans', sans-serif;
+}
+
+/* 본문 단락 */
+.nb-content p {
+    font-size: 1rem;
+    color: #4B5563;
+    line-height: 1.85;
+    margin-bottom: 18px;
+}
+
+/* 구분선 */
+.nb-content hr {
+    border: none;
+    border-top: 1px solid #F3F4F6;
+    margin: 40px 0;
+}
+
+/* 리스트 */
+.nb-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+    border: 1px solid #F3F4F6;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.nb-content ul li {
+    padding: 12px 16px 12px 44px;
+    color: #374151;
+    font-size: 0.97rem;
+    line-height: 1.7;
+    border-bottom: 1px solid #F9FAFB;
+    position: relative;
+    background: #ffffff;
+    transition: background 0.15s;
+}
+
+.nb-content ul li:last-child { border-bottom: none; }
+
+.nb-content ul li:hover { background: #F8FAFC; }
+
+.nb-content ul li::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 20px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #00B4D8;
+}
+
+/* 테이블 */
+.nb-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0 32px;
+    font-size: 0.94rem;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #E5E7EB;
+}
+
+.nb-content th {
+    background: #1e3a5f;
+    color: #ffffff;
+    padding: 13px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-family: 'Pretendard Variable', 'Open Sans', sans-serif;
+}
+
+.nb-content td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #F3F4F6;
+    color: #4B5563;
+    vertical-align: top;
+}
+
+.nb-content tr:last-child td { border-bottom: none; }
+.nb-content tr:nth-child(even) td { background: #F9FAFB; }
+
+/* Mermaid 다이어그램 */
+.nb-content .mermaid {
+    background: #F8FAFC;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 32px 20px;
+    margin: 20px 0 32px;
+    overflow-x: auto;
+    text-align: center;
+}
+
+/* ── 연혁 아코디언 ───────────────────────────────────────── */
+.nb-history-item {
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+
+.nb-history-item.is-open {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    border-color: rgba(0,180,216,.3);
+}
+
+.nb-history-item__header {
+    width: 100%;
+    background: #ffffff;
+    border: none;
+    padding: 18px 24px;
     cursor: pointer;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border: 1px solid #ddd; /* 테두리 추가 */
-    border-radius: 4px; /* 모서리를 둥글게 */
-    transition: background-color 0.3s, transform 0.3s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
-}
-
-.history-year-title:hover {
-    background-color: #b0d5f9; /* 호버 시 더 진한 배경색 */
-    transform: scale(1.02); /* 약간 확대 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* 호버 시 그림자 강화 */
-}
-
-.history-year-title:after {
-    content: '▼'; /* 기본 상태 아이콘 */
-    font-size: 1rem;
-    color: #00509e;
-    transition: transform 0.2s ease;
-}
-
-.history-year.is-active .history-year-title:after {
-    transform: rotate(180deg); /* 열렸을 때 화살표 방향 변경 */
-    color: #000;
-}
-
-/* 닫힌 상태의 기본 배경 강조 */
-.history-year {
-    margin-bottom: 1rem;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.history-year-content {
-    overflow: hidden; /* 내용이 넘치면 숨김 */
-    opacity: 0.5; /* 흐릿한 효과 */
-    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-}
-
-.history-year.is-active .history-year-content {
-    max-height: none; 
-    opacity: 1; 
-}
-
-
-/* 모바일 반응형 조정 */
-@media screen and (max-width: 768px) {
-    .banner-container {
-        height: 300px;  /* 모바일에서는 더 작게 */
-    }
-}
-
-/* 표 스타일 */
-
-table {
-    width: 100%;
-    table-layout: auto; /* 다시 auto로 변경 */
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 8px;
-    border: 1px solid #ddd;
+    justify-content: space-between;
+    gap: 12px;
+    transition: background 0.15s;
     text-align: left;
 }
 
-/* 마지막 열을 제외한 모든 열 */
-td:not(:last-child), 
-th:not(:last-child) {
-    width: 1%; /* 중요: 내용물 크기만큼만 공간 차지하게 함 */
-    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+.nb-history-item__header:hover { background: #F8FAFC; }
+.nb-history-item.is-open .nb-history-item__header { background: #EFF6FF; }
+
+.nb-history-item__year {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #111827;
+    font-family: 'Pretendard Variable', 'Open Sans', sans-serif;
 }
 
-/* 마지막 열 */
-td:last-child,
-th:last-child {
-    width: 100%; /* 남은 공간 모두 사용 */
-    white-space: normal; /* 텍스트 자동 줄바꿈 */
+.nb-history-item.is-open .nb-history-item__year { color: #00B4D8; }
+
+.nb-history-item__icon {
+    color: #9CA3AF;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+    display: flex;
 }
 
+.nb-history-item.is-open .nb-history-item__icon { transform: rotate(180deg); color: #00B4D8; }
+
+.nb-history-item__body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.32s ease;
+}
+
+.nb-history-item.is-open .nb-history-item__body { max-height: 2000px; }
+
+.nb-history-item__content {
+    padding: 20px 28px 24px;
+    border-top: 1px solid #F3F4F6;
+}
+
+.nb-history-item__content ul { border: none; border-radius: 0; margin: 0; }
+.nb-history-item__content ul li { background: transparent; border-bottom: 1px dashed #F3F4F6; }
+.nb-history-item__content ul li:last-child { border-bottom: none; }
 </style>
 
-<!-- if Title = "연혁 및 사업실적 "" -->
-
-<section class="section is-medium" style="padding-top: 0;">
-	<div class="container">
-			<div class="columns">
-					<!-- 왼쪽 마진 설정 -->
-					<div class="column is-10 is-offset-1" style="margin-left: 5%;">
-							<div class="content">
-									{{ if eq .Title "연혁 및 사업실적" }}
-											<!-- 소개 텍스트 -->
-											<p>{{ index (split .RawContent "\n\n") 0 }}</p>
-
-											<!-- 연도별 내용 -->
-											{{ $sections := split .RawContent "## " }}
-											{{ range after 1 $sections }}
-													{{ $yearContent := split . "\n" }}
-													{{ $year := index $yearContent 0 }}
-													<div class="history-year">
-															<div class="history-year-title">
-																	<h2 class="title is-4 mb-0">{{ $year }}</h2>
-															</div>
-															<div class="history-year-content">
-																	{{ delimit (after 1 $yearContent) "\n" | markdownify }}
-															</div>
-													</div>
-											{{ end }}
-									{{ else }}
-											{{ .Content }}
-									{{ end }}
-							</div>
-					</div>
-			</div>
-	</div>
-</section>
-
 <script>
-// Hugo 변수를 JavaScript 변수로 먼저 선언
-const pageTitle = "{{ .Title }}";
+(function () {
+    /* ── 연혁 아코디언 ── */
+    const items = document.querySelectorAll('.nb-history-item');
+    if (!items.length) return;
 
-// JavaScript에서 문자열 비교
-if (pageTitle === "연혁 및 사업실적") {
-    document.addEventListener('DOMContentLoaded', function () {
-        const yearTitles = document.querySelectorAll('.history-year-title');
-        const yearBlocks = document.querySelectorAll('.history-year');
+    items.forEach(function (item, idx) {
+        const btn  = item.querySelector('.nb-history-item__header');
+        const body = item.querySelector('.nb-history-item__body');
+        if (!btn || !body) return;
 
-        // 기본적으로 모든 섹션을 닫기
-        yearBlocks.forEach(function (block) {
-            block.classList.remove('is-active');
-            const content = block.querySelector('.history-year-content');
-            content.style.maxHeight = '0';
-            content.style.opacity = '0';
+        /* 첫 항목만 열기 */
+        if (idx === 0) item.classList.add('is-open');
+
+        btn.addEventListener('click', function () {
+            const isOpen = item.classList.contains('is-open');
+            items.forEach(function (i) { i.classList.remove('is-open'); });
+            if (!isOpen) item.classList.add('is-open');
         });
-
-        // 가장 최신 섹션만 열기
-        const latestBlock = yearBlocks[0]; // 최신 섹션이 HTML 상에서 첫 번째라 가정
-        if (latestBlock) {
-            latestBlock.classList.add('is-active');
-            const content = latestBlock.querySelector('.history-year-content');
-            content.style.maxHeight = content.scrollHeight + 'px';
-            content.style.opacity = '1';
-        }
-
-        // 토글 이벤트 추가
-				yearTitles.forEach(function (title) {
-    title.addEventListener('click', function () {
-        const yearBlock = title.parentElement;
-        const content = yearBlock.querySelector('.history-year-content');
-
-        if (yearBlock.classList.contains('is-active')) {
-            yearBlock.classList.remove('is-active');
-            content.style.maxHeight = '0';
-            content.style.opacity = '0';
-        } else {
-            // 다른 섹션 닫기
-            yearBlocks.forEach(function (block) {
-                block.classList.remove('is-active');
-                const otherContent = block.querySelector('.history-year-content');
-                otherContent.style.maxHeight = '0';
-                otherContent.style.opacity = '0';
-            });
-
-            // 현재 섹션 열기
-            yearBlock.classList.add('is-active');
-            content.style.maxHeight = content.scrollHeight + 'px';
-            content.style.opacity = '1';
-        }
     });
-});
-
-    });
-}
-
+})();
 </script>
