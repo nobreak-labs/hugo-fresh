@@ -1,1 +1,15 @@
-{{ "<!-- Layout with no content to avoid WARN message about missing page layout -->" | safeHTML }}
+{{ define "main" }}
+
+{{ if eq .Layout "course" }}
+    {{ partial "single/course-list.html" . }}
+{{ else if eq .Layout "edm" }}
+    {{ partial "single/course-edm.html" . }}
+{{ else }}
+    {{ "<!-- Layout with no content to avoid WARN message about missing page layout -->" | safeHTML }}
+{{ end }}
+
+{{ if .Params.include_footer }}
+    {{ partial "footer.html" . }}
+{{ end }}
+
+{{ end }}
