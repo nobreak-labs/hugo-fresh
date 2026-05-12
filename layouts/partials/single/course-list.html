@@ -43,7 +43,7 @@
 
 							<div class="card-content">
 								<div class="card-title">
-									<h4>{{ .title }}</h4>
+									<h4>{{ .title | safeHTML }}</h4>
 								</div>
 
 								{{/* 날짜 표시 — ended면 숨김, endDate가 이미 지났으면 endDate도 숨김 */}}
